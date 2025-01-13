@@ -4,10 +4,12 @@ import com.inditex.codemain.model.Price;
 import com.inditex.codemain.model.PriceDTO;
 import com.inditex.codemain.repository.PriceRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
+@Service
 public class PriceServiceImpl implements PriceService{
 
     private final PriceRepository priceRepository;
