@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class PriceDTO {
-    // Getters únicamente (clase inmutable)
+    // Getters only (immutable class)
     private final Integer productId;
     private final Integer brandId;
     private final Integer priceList;
@@ -14,7 +14,7 @@ public class PriceDTO {
     private final LocalDateTime endDate;
     private final Double price;
 
-    // Constructor privado para forzar el uso del Builder
+    // Private constructor to force the use of Builder
     private PriceDTO(Builder builder) {
         this.productId = builder.productId;
         this.brandId = builder.brandId;
@@ -24,7 +24,7 @@ public class PriceDTO {
         this.price = builder.price;
     }
 
-    // Builder estático
+    // Static Builder
     public static class Builder {
         private Integer productId;
         private Integer brandId;
