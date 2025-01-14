@@ -3,11 +3,15 @@ package com.inditex.codemain.service;
 import com.inditex.codemain.model.Price;
 import com.inditex.codemain.model.PriceDTO;
 import com.inditex.codemain.repository.PriceRepository;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 
 @Service
 public class PriceServiceImpl implements PriceService{
@@ -29,11 +33,13 @@ public class PriceServiceImpl implements PriceService{
      * @return PriceDTO object containing the price details
      */
     @Override
-    public PriceDTO getPrice(LocalDateTime applicationDate, Integer productId, Integer brandId) {
+    public PriceDTO getPrice(@RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime applicationDate,
+                             @RequestParam @NotNull Integer productId,
+                             @RequestParam @NotNull Integer brandId) {
         // Query the repository for applicable prices and return the first one based on priority
         return priceRepository.findApplicablePrices(brandId, productId, applicationDate)
                 .stream()
-                .findFirst()
+                .max(Comparator.comparingInt(Price::getPriority)) //Optimized
                 .map(this::mapToDTO)
                 // If no price is found, throw an exception with a not found status
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No price found"));
