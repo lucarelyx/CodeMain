@@ -66,4 +66,12 @@ class PriceControllerTest {
                 .andExpect(jsonPath("$.price").value(38.95));
     }
 
+    @Test
+    void testInvalidDateFormat() throws Exception {
+        mockMvc.perform(get("/api/prices")
+                        .param("brandId", "1")
+                        .param("productId", "35455")
+                        .param("applicationDate", "invalid-date"))
+                .andExpect(status().isBadRequest());
+    }
 }
